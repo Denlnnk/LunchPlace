@@ -1,0 +1,40 @@
+{
+  "description": "Pizza and shisha bar",
+  "phone_number": "0989566773",
+  "menu": {
+    "Monday": [
+      {
+        "name": "soup",
+        "price": 120
+      }
+    ],
+    "Tuesday": [
+      {
+        "name": "coca cola",
+        "price": 90
+      }
+    ],
+    "Wednesday": [
+      {
+        "name": "rise",
+        "price": 100
+      }
+    ],
+    "Thursday": [
+      {
+        "name": "pepsi",
+        "price": 80
+      }
+    ],
+    "Friday": [
+      {
+        "name": "fanta",
+        "price": 95
+      },
+      {
+        "name": "pepsi",
+        "price": 80
+      }
+    ]
+  }
+}
