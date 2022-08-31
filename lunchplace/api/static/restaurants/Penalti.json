@@ -10,26 +10,30 @@
     ],
     "Tuesday": [
       {
-        "name": "sosi xui pizdaplet",
-        "price": 120
+        "name": "coca cola",
+        "price": 90
       }
     ],
     "Wednesday": [
       {
-        "name": "soup",
-        "price": 120
+        "name": "rise",
+        "price": 100
       }
     ],
     "Thursday": [
       {
-        "name": "soup",
-        "price": 120
+        "name": "pepsi",
+        "price": 80
       }
     ],
     "Friday": [
       {
-        "name": "soup",
-        "price": 120
+        "name": "fanta",
+        "price": 95
+      },
+      {
+        "name": "pepsi",
+        "price": 80
       }
     ]
   }
