@@ -1,6 +1,4 @@
 from rest_framework.serializers import ModelSerializer
-from rest_framework.generics import RetrieveAPIView
-from rest_framework.permissions import IsAuthenticated
 from .models import *
 
 
@@ -16,12 +14,21 @@ class EmployeeSerializer(ModelSerializer):
         fields = ('id', 'username', 'email', 'password')
 
 
-class UserAPIView(RetrieveAPIView):
-    permission_classes = (IsAuthenticated,)
-    serializer_class = EmployeeSerializer
+class RegisterSerializer(ModelSerializer):
+    class Meta:
+        model = Employee
+        fields = ('id', 'username', 'email', 'password', 'first_name', 'last_name')
+        extra_kwargs = {
+            'password': {'write_only': True},
+        }
 
-    def get_object(self):
-        return self.request.user
+    def create(self, validated_data):
+        employee = Employee.objects.create_user(username=validated_data['username'],
+                                                email=validated_data['email'],
+                                                password=validated_data['password'],
+                                                first_name=validated_data['first_name'],
+                                                last_name=validated_data['last_name'])
+        return employee
 
 
 class MenuSerializer(ModelSerializer):

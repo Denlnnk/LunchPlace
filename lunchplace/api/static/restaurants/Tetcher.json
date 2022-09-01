@@ -18,6 +18,10 @@
       {
         "name": "rise",
         "price": 100
+      },
+      {
+        "name": "pepsi",
+        "price": 80
       }
     ],
     "Thursday": [

@@ -3,8 +3,9 @@ from os import listdir
 
 
 def upload(request_data):
-    onlyfiles = [f for f in listdir('/lunchplace/api/static/restaurants')]
-    list_names = [names.rstrip('.json') for names in onlyfiles]
+    """Uploading data from Restaurant files"""
+    only_files = [f for f in listdir('/home/denis/PycharmProjects/LunchPlace/lunchplace/api/static/restaurants/')]
+    list_names = [names.rstrip('.json') for names in only_files]
     data = []
     for restaurant_name in list_names:
         file = open("/home/denis/PycharmProjects/LunchPlace/lunchplace/api/static/restaurants/" + restaurant_name + '.json')

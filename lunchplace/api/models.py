@@ -3,10 +3,12 @@ from django.contrib.auth.models import AbstractUser
 
 
 class Employee(AbstractUser):
-    name = models.CharField(max_length=200, null=True)
+    username = models.CharField(max_length=200, unique=True, null=True)
     email = models.EmailField(unique=True, null=True)
+    first_name = models.CharField(max_length=150, null=True)
+    last_name = models.CharField(max_length=150, null=True)
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
 
     class Meta:
