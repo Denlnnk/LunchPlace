@@ -2,24 +2,29 @@ from django.db.models import F
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import *
-from .service.restaurant_upload_service import upload
+from .service import restaurant_upload_service
+from .response import Response as res
 
 
 # Create your views here.
 @api_view(['GET'])
-def getRoutes(request):
+def get_routes(request):
     routes = [
         'POST /upload_system/',
-        'POST /create_employee/',
-        'GET /view_menu/<str:restaurant_name>/',
+        'POST /register_employee/',
+        'POST /vote/<str:restaurant_name>/',
+        'GET /view_employees/',
         'GET /view_restaurants/',
+        'GET /view_current_day_menu/<str:restaurant_name>/',
+        'GET /votes_for_day/',
+
     ]
 
     return Response(routes)
 
 
 @api_view(['GET'])
-def get_restaurant(request):
+def view_restaurants(request):
     restaurants = Restaurant.objects.all()
     serializer = RestaurantSerializer(restaurants, many=True)
 
@@ -27,7 +32,7 @@ def get_restaurant(request):
 
 
 @api_view(['GET'])
-def get_employee(request):
+def view_employees(request):
     employees = Employee.objects.all()
     serializer = EmployeeSerializer(employees, many=True)
 
@@ -43,39 +48,35 @@ def view_menu(request, restaurant_name):
 
 
 @api_view(['POST'])
-def create_restaurant(request):
-    serializer = RestaurantSerializer(data=request.data)
-
-    if serializer.is_valid():
-        serializer.save()
-
-    return Response(serializer.data)
-
-
-@api_view(['POST'])
 def vote_restaurant(reqeust, restaurant_name):
     Restaurant.objects.filter(title__icontains=restaurant_name).update(vote=F('vote') + 1)
+    return Response(True)
 
 
 @api_view(['POST'])
 def create_employee(request):
-    serializer = EmployeeSerializer(data=request.data)
-
-    if serializer.is_valid():
-        serializer.save()
-
-    return Response(serializer.data)
+    serializer = RegisterSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return Response({
+        "message": "User Created Successfully.  Now perform Login to get your token",
+    })
 
 
 @api_view(['POST'])
 def upload_system(request):
+    """Uploading info about Restaurants from files"""
     if 'day' not in request.data.keys():
-        raise Exception('Expected day parameter in request body')
+        return res.error_response('Expected day parameter in request body')
 
     Restaurant.objects.all().delete()
     Menu.objects.all().delete()
 
-    restaurant_info_list = upload(request.data)
+    try:
+        restaurant_info_list = restaurant_upload_service.upload(request.data)
+    except Exception as ex:
+        return res.error_response(str(ex))
+
     for restaurant_info in restaurant_info_list:
         restaurant_serializer = RestaurantSerializer(data={'title': restaurant_info['name'],
                                                            'description': restaurant_info['description'],
