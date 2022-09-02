@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import *
 from .service import restaurant_upload_service
+from .response import Response as res
 
 
 # Create your views here.
@@ -12,10 +13,10 @@ def get_routes(request):
         'POST /upload_system/',
         'POST /register_employee/',
         'POST /vote/<str:restaurant_name>/',
-        'GET /view_employees/'
-        'GET /view_restaurants/'
-        'GET /view_menu/<str:restaurant_name>/',
+        'GET /view_employees/',
         'GET /view_restaurants/',
+        'GET /view_current_day_menu/<str:restaurant_name>/',
+        'GET /votes_for_day/',
 
     ]
 
@@ -64,14 +65,18 @@ def create_employee(request):
 
 @api_view(['POST'])
 def upload_system(request):
-    """From Restaurant file uploading data about restaurant and menu by day"""
+    """Uploading info about Restaurants from files"""
     if 'day' not in request.data.keys():
-        raise Exception('Expected day parameter in request body')
+        return res.error_response('Expected day parameter in request body')
 
     Restaurant.objects.all().delete()
     Menu.objects.all().delete()
 
-    restaurant_info_list = restaurant_upload_service.upload(request.data)
+    try:
+        restaurant_info_list = restaurant_upload_service.upload(request.data)
+    except Exception as ex:
+        return res.error_response(str(ex))
+
     for restaurant_info in restaurant_info_list:
         restaurant_serializer = RestaurantSerializer(data={'title': restaurant_info['name'],
                                                            'description': restaurant_info['description'],
