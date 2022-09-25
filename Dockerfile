@@ -1,15 +1,16 @@
-FROM python:3.9-slim-buster
+FROM python:3.9
 
-WORKDIR /lunchplace
+# Set environment variables
+ENV PIP_DISABLE_PIP_VERSION_CHECK 1
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-COPY requirements.txt requirements.txt
-COPY /lunchplace/ .
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install psycopg2-binary
-RUN pip install --upgrade djangorestframework-simplejwt
+# Set work directory
+WORKDIR /LunchPlace
 
+# Install dependencies
+COPY requirements.txt /LunchPlace/
+RUN pip install -r requirements.txt
 
-COPY . .
-RUN echo "$PWD"
-CMD [ "python", "manage.py" , "runserver"]
+# Copy project
+COPY . /LunchPlace/

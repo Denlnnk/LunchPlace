@@ -50,7 +50,8 @@ def view_menu(request, restaurant_name):
 @api_view(['POST'])
 def vote_restaurant(reqeust, restaurant_name):
     Restaurant.objects.filter(title__icontains=restaurant_name).update(vote=F('vote') + 1)
-    return Response(True)
+    return Response({"success": True,
+                     "message": f"You voted for the {restaurant_name}"})
 
 
 @api_view(['POST'])
@@ -58,9 +59,8 @@ def create_employee(request):
     serializer = RegisterSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     serializer.save()
-    return Response({
-        "message": "User Created Successfully.  Now perform Login to get your token",
-    })
+    return Response({"success": True,
+                     "message": "User Created Successfully.  Now perform Login to get your token"})
 
 
 @api_view(['POST'])
@@ -92,4 +92,5 @@ def upload_system(request):
             if serializer.is_valid():
                 serializer.save()
 
-    return Response(True)
+    return Response({"success": True,
+                     "message": "System uploaded successfully"})
