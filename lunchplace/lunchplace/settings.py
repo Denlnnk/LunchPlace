@@ -72,10 +72,10 @@ WSGI_APPLICATION = 'lunchplace.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "postgres",
-        "USER": "postgres",
-        "PASSWORD": "postgres",
-        "HOST": "db",  # set in docker-compose.yml
+        "NAME": "restaurantdb",
+        "USER": "denis",
+        "PASSWORD": "hellomydear12",
+        "HOST": "localhost",  # set in docker-compose.yml
         "PORT": 5432,  # default postgres port
     }
 }
