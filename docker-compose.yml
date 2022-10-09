@@ -4,6 +4,7 @@ services:
   web:
     build: .
     command: python lunchplace/manage.py runserver 0.0.0.0:8000
+    env_file: .env
     volumes:
       - .:/lunchplace
     ports:

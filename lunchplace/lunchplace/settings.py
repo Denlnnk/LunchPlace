@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -52,7 +51,7 @@ ROOT_URLCONF = 'lunchplace.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -69,13 +68,23 @@ WSGI_APPLICATION = 'lunchplace.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": "restaurantdb",
+#         "USER": "denis",
+#         "PASSWORD": "hellomydear12",
+#         "HOST": "localhost",  # set in docker-compose.yml
+#         "PORT": 5432,  # default postgres port
+#     }
+# }
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "restaurantdb",
-        "USER": "denis",
-        "PASSWORD": "hellomydear12",
-        "HOST": "localhost",  # set in docker-compose.yml
+        "NAME": "postgres",
+        "USER": "postgres",
+        "PASSWORD": "postgres",
+        "HOST": "db",  # set in docker-compose.yml
         "PORT": 5432,  # default postgres port
     }
 }

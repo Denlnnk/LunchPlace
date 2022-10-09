@@ -65,7 +65,7 @@ def create_employee(request):
 
 @api_view(['POST'])
 def upload_system(request):
-    """Uploading info about Restaurants from files"""
+    """Uploading info about Restaurants"""
     if 'day' not in request.data.keys():
         return res.error_response('Expected day parameter in request body')
 
@@ -73,12 +73,12 @@ def upload_system(request):
     Menu.objects.all().delete()
 
     try:
-        restaurant_info_list = restaurant_upload_service.upload(request.data)
+        restaurants_info_list = restaurant_upload_service.upload(request.data)
     except Exception as ex:
         return res.error_response(str(ex))
 
-    for restaurant_info in restaurant_info_list:
-        restaurant_serializer = RestaurantSerializer(data={'title': restaurant_info['name'],
+    for restaurant_info in restaurants_info_list:
+        restaurant_serializer = RestaurantSerializer(data={'title': restaurant_info['restaurant_name'],
                                                            'description': restaurant_info['description'],
                                                            'phone_number': restaurant_info['phone_number']})
         if restaurant_serializer.is_valid():
@@ -87,7 +87,7 @@ def upload_system(request):
         for dish in restaurant_info['menu']:
             serializer = MenuSerializer(data={'name': dish['name'],
                                               'price': dish['price'],
-                                              'restaurant_name': restaurant_info['name']})
+                                              'restaurant_name': restaurant_info['restaurant_name']})
 
             if serializer.is_valid():
                 serializer.save()

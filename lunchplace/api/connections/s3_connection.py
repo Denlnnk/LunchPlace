@@ -20,12 +20,13 @@ class S3Connection(object):
                         aws_secret_access_key=aws_secret_key_id)
 
     def load_files_content(self):
-        bucket = resource.Bucket(self.bucket_name)
+        bucket = self.resource.Bucket(self.bucket_name)
         objects = bucket.objects.all()
 
         restaurant_info_list = []
         for my_bucket_object in objects:
-            file_content = resource.Object(self.bucket_name, my_bucket_object.key).get()['Body'].read().decode('utf-8')
+            file_content = self.resource.Object(self.bucket_name, my_bucket_object.key).get()['Body'].read().decode(
+                'utf-8')
             if file_content == '':
                 continue
 
