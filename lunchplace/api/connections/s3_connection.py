@@ -1,6 +1,6 @@
 import os
 import json
-
+import boto3
 from boto3 import resource
 
 
@@ -34,3 +34,9 @@ class S3Connection(object):
             restaurant_info_list.append(json_content)
 
         return restaurant_info_list
+
+    def upload_to_s3(self):
+        files_root = os.path.abspath('static/restaurants/').replace('api/connections', '')
+        for file in os.listdir(files_root):
+            with open(files_root + '/' + file, 'rb') as f:
+                self.resource.Bucket(self.bucket_name).upload_fileobj(f, f'restaurant/{file}')
