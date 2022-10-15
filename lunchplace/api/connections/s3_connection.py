@@ -36,9 +36,7 @@ class S3Connection(object):
         return restaurant_info_list
 
     def upload_to_s3(self):
-        s3 = self.resource
-        files_root = os.path.abspath('static/restaurants/').replace('api/connections/', '')
-        for files in os.listdir(files_root):
-            with open(files, 'rb') as f:
-                s3.Bucket(self.bucket_name).upload_fileobj(f, f'restaurant/{files}')
-
+        files_root = os.path.abspath('static/restaurants/').replace('api/connections', '')
+        for file in os.listdir(files_root):
+            with open(files_root + '/' + file, 'rb') as f:
+                self.resource.Bucket(self.bucket_name).upload_fileobj(f, f'restaurant/{file}')
